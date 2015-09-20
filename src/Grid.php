@@ -12,8 +12,18 @@ use TomF\BattleShips\Exception\PlacementCollisionException;
  */
 class Grid
 {
+    const SHOT_MISSES = 1;
+    const SHOT_HITS = 2;
+    const SHOT_SINKS = 3;
 
     private $size;
+
+    /**
+     * Convenience counters...
+     */
+    private $shotsFired = 0;
+    private $shotsHit = 0;
+    private $shotsSunk = 0;
 
     /**
      * @var Ship[]
@@ -86,6 +96,47 @@ class Grid
                 throw new PlacementCollisionException($x, $y);
             }
         }
+    }
+
+    /**
+     * Return different status code depending on outcome of shot
+     * @todo: currently allow the same shot to be 'fired' multiple times.
+     * @todo: probably replace with event dispatcher
+     *
+     * @return int
+     */
+    public function receiveShot($x, $y)
+    {
+        $this->shotsFired++;
+
+        $result = self::SHOT_MISSES;
+        foreach ($this->ships as $ship) {
+            if ($ship->receiveShot($x, $y)) {
+                $this->shotsHit++;
+                $result = self::SHOT_HITS;
+                if ($ship->isSunk()) {
+                    $this->shotsSunk++;
+                    $result = self::SHOT_SINKS;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    public function getShotsCount()
+    {
+        return $this->shotsFired;
+    }
+
+    public function getHitsCount()
+    {
+        return $this->shotsHit;
+    }
+
+    public function getSinksCount()
+    {
+        return $this->shotsSunk;
     }
 
     private function addShip(Ship $ship)

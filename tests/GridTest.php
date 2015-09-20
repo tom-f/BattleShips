@@ -152,4 +152,45 @@ Class GridTest extends PHPUnit_Framework_TestCase {
         $grid->placeShip($ship2, 5, 3);
     }
 
+    public function testShotsHitMissSink()
+    {
+        $grid = new Grid(10);
+        $ship1 = new Ship(4, Ship::ORIENTATION_VERTICAL);
+
+        $grid->placeShip($ship1, 1, 1);
+
+        $this->assertEquals(Grid::SHOT_MISSES, $grid->receiveShot(5, 5));
+        $this->assertEquals(Grid::SHOT_MISSES, $grid->receiveShot(8, 4));
+        $this->assertEquals(Grid::SHOT_MISSES, $grid->receiveShot(1, 5));
+
+        $this->assertEquals(Grid::SHOT_HITS, $grid->receiveShot(1, 4));
+        $this->assertEquals(Grid::SHOT_HITS, $grid->receiveShot(1, 3));
+        $this->assertEquals(Grid::SHOT_HITS, $grid->receiveShot(1, 1));
+
+        $this->assertEquals(Grid::SHOT_SINKS, $grid->receiveShot(1, 2));
+    }
+
+    public function testScoreTracking()
+    {
+        $grid = new Grid(10);
+        $ship1 = new Ship(4, Ship::ORIENTATION_VERTICAL);
+
+        $grid->placeShip($ship1, 1, 1);
+
+        $grid->receiveShot(5, 5);
+        $grid->receiveShot(8, 4);
+        $grid->receiveShot(1, 5);
+
+        $grid->receiveShot(1, 4);
+        $grid->receiveShot(1, 3);
+        $grid->receiveShot(1, 1);
+
+        $grid->receiveShot(1, 2);
+
+        $this->assertEquals(7, $grid->getShotsCount());
+        $this->assertEquals(4, $grid->getHitsCount());
+        $this->assertEquals(1, $grid->getSinksCount());
+
+    }
+
 }
