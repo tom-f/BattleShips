@@ -52,6 +52,24 @@ class Ship
     }
 
     /**
+     * True if a hit occurs, false if not.
+     *
+     * @return bool
+     */
+    public function testHit($x, $y)
+    {
+        $hit = false;
+        foreach ($this->coordinates as $point) {
+            /** @var Point $point **/
+            if ($point->testHit($x, $y)) {
+                $hit = true;
+            }
+        }
+
+        return $hit;
+    }
+
+    /**
      * @return float
      */
     public function getHitPercentage()
