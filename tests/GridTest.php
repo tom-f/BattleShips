@@ -85,7 +85,7 @@ Class GridTest extends PHPUnit_Framework_TestCase {
      * Here we are testing when a ship overlaps the boundry (ie the 7,9 coord)
      *
      * @expectedException TomF\BattleShips\Exception\PlacementErrorException
-     * @expectedExceptionMessage 7, 9 is an invalid placement.
+     * @expectedExceptionMessage 9, 7 is an invalid placement.
      */
     public function testShipOutofBoundsOverlapPlacement()
     {
@@ -109,6 +109,47 @@ Class GridTest extends PHPUnit_Framework_TestCase {
         $res = $grid->placeShip($ship, $x, $y);
 
         $this->assertTrue($res);
+    }
+
+    /**
+     * @expectedException TomF\BattleShips\Exception\PlacementCollisionException
+     * @expectedExceptionMessage 3, 3 clashes with another ship.
+     */
+    public function testShipCollisionPlacement()
+    {
+        $grid = new Grid(10);
+        $ship1 = new Ship(2);
+        $ship2 = new Ship(2);
+
+        $grid->placeShip($ship1, 3, 3);
+        $grid->placeShip($ship2, 3, 3);
+    }
+
+    /**
+     * @expectedException TomF\BattleShips\Exception\PlacementCollisionException
+     * @expectedExceptionMessage 4, 3 clashes with another ship.
+     */
+    public function testShipCollisionEndOverlapPlacement()
+    {
+        $grid = new Grid(10);
+        $ship1 = new Ship(2);
+        $ship2 = new Ship(2, Ship::ORIENTATION_VERTICAL);
+
+        $grid->placeShip($ship1, 3, 3);
+        $grid->placeShip($ship2, 4, 2);
+    }
+
+    /**
+     * Ships in a line
+     */
+    public function testShipNoCollisionPlacement()
+    {
+        $grid = new Grid(10);
+        $ship1 = new Ship(2);
+        $ship2 = new Ship(2);
+
+        $grid->placeShip($ship1, 3, 3);
+        $grid->placeShip($ship2, 5, 3);
     }
 
 }
