@@ -1,2 +1,2 @@
-# BattleShips
-Battleships!
+# Battle Ships
+Battle ships!
