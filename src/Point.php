@@ -32,7 +32,7 @@ class Point
 
     public function isHit()
     {
-        return $isHit;
+        return $this->isHit;
     }
 
     public function testHit($x, $y)
@@ -46,7 +46,7 @@ class Point
 
     private function isMe($x, $y)
     {
-        return (($x = $this->x) && ($y == $y));
+        return (($x == $this->x) && ($y == $y));
     }
 
 }
