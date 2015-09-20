@@ -46,7 +46,7 @@ class Point
 
     public function testHit($x, $y)
     {
-        return (($x == $this->x) && ($y == $y));
+        return (($x == $this->x) && ($y == $this->y));
     }
 
 }
