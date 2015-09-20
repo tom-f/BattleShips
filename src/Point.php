@@ -35,16 +35,16 @@ class Point
         return $this->isHit;
     }
 
-    public function testHit($x, $y)
+    public function receiveShot($x, $y)
     {
-        if ($this->isMe($x, $y)) {
+        if ($this->testHit($x, $y)) {
             $this->setHit();
         }
 
         return $this->isHit();
     }
 
-    private function isMe($x, $y)
+    public function testHit($x, $y)
     {
         return (($x == $this->x) && ($y == $y));
     }

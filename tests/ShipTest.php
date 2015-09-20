@@ -22,17 +22,17 @@ Class ShipTest extends PHPUnit_Framework_TestCase {
        $this->assertEquals(0, $ship->getHitPercentage());
 
        //Hit one
-       $ship->testHit(1, 2);
+       $ship->receiveShot(1, 2);
 
        $this->assertEquals(25, $ship->getHitPercentage());
 
        //Hit two
-       $ship->testHit(2, 2);
+       $ship->receiveShot(2, 2);
        $this->assertEquals(50, $ship->getHitPercentage());
 
        //Hit two more
-       $ship->testHit(3, 2);
-       $ship->testHit(4, 2);
+       $ship->receiveShot(3, 2);
+       $ship->receiveShot(4, 2);
        $this->assertEquals(100, $ship->getHitPercentage());
    }
 
@@ -54,7 +54,7 @@ Class ShipTest extends PHPUnit_Framework_TestCase {
        $ship->addCoordinate(new Point(3, 2));
 
        // Hit ship once
-       $ship->testHit(2, 2);
+       $ship->receiveShot(2, 2);
 
        $this->assertTrue($ship->anyHits());
    }
@@ -66,8 +66,8 @@ Class ShipTest extends PHPUnit_Framework_TestCase {
        $ship->addCoordinate(new Point(2, 2));
 
        // Hit Twice;
-       $ship->testHit(1, 2);
-       $ship->testHit(2, 2);
+       $ship->receiveShot(1, 2);
+       $ship->receiveShot(2, 2);
 
        $this->assertTrue($ship->isSunk());
    }

@@ -53,6 +53,7 @@ class Ship
 
     /**
      * True if a hit occurs, false if not.
+     * Does not effect ship state
      *
      * @return bool
      */
@@ -62,6 +63,25 @@ class Ship
         foreach ($this->coordinates as $point) {
             /** @var Point $point **/
             if ($point->testHit($x, $y)) {
+                $hit = true;
+            }
+        }
+
+        return $hit;
+    }
+
+    /**
+     * True if a hit occurs, false if not.
+     * Affects ship state
+     *
+     * @return bool
+     */
+    public function receiveShot($x, $y)
+    {
+        $hit = false;
+        foreach ($this->coordinates as $point) {
+            /** @var Point $point **/
+            if ($point->receiveShot($x, $y)) {
                 $hit = true;
             }
         }
