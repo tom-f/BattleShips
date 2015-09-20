@@ -51,4 +51,46 @@ class Ship
         return $this->orientation;
     }
 
+    /**
+     * @return float
+     */
+    public function getHitPercentage()
+    {
+        $hits = $this->countHits();
+
+        return ($hits/$this->length)*100;
+    }
+
+    /**
+     * @return bool
+     */
+    public function anyHits()
+    {
+        return ($this->countHits() > 0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSunk()
+    {
+        return ($this->length == $this->countHits());
+    }
+
+    /**
+     * @return int
+     */
+    private function countHits()
+    {
+        $hits = 0;
+        foreach ($this->coordinates as $point) {
+            /** @var Point $point **/
+            if ($point->isHit()) {
+                $hits++;
+            }
+        }
+
+        return $hits;
+    }
+
 }
