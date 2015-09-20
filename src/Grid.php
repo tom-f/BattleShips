@@ -14,6 +14,11 @@ class Grid
 
     private $size;
 
+    /**
+     * @var Ship[]
+     */
+    private $ships;
+
     public function __construct($size)
     {
         $this->size = $size;
@@ -28,7 +33,7 @@ class Grid
     public function placeShip(Ship $ship, $x, $y)
     {
         // check in bounds
-        $this->checkBounds($x, $y);
+        $this->fitShip($x, $y);
 
         // Get coords for ship given x,y
         switch ($ship->getOrientation()) {
@@ -36,7 +41,7 @@ class Grid
                 for ($i = 1; $i <= $ship->getLength(); $i++) {
                     $newX = $x;
                     $newY = $y+$i;
-                    $this->checkBounds($newX, $newY);
+                    $this->fitShip($newX, $newY);
                     $point = new Point($newX, $newY);
                     $ship->addCoordinate($point);
                 }
@@ -45,21 +50,33 @@ class Grid
                 for ($i = 1; $i <= $ship->getLength(); $i++) {
                     $newX = $x;
                     $newY = $y+$i;
-                    $this->checkBounds($newX, $newY);
+                    $this->fitShip($newX, $newY);
                     $point = new Point($newX, $newY);
                     $ship->addCoordinate($point);
                 }
                 break;
         }
 
+        // If ship makes it this far placement is valid.
+        $this->addShip($ship);
         return true;
     }
 
-    public function checkBounds($x, $y)
+    private function fitShip($x, $y)
+    {
+        $this->checkBounds($x, $y);
+    }
+
+    private function checkBounds($x, $y)
     {
         if ($x < 0 || $y < 0 || $x > $this->size || $y > $this->size) {
             throw new PlacementErrorException($x, $y);
         }
+    }
+
+    private function addShip(Ship $ship)
+    {
+        $this->ships[] = $ship;
     }
 
 }

@@ -81,6 +81,23 @@ Class GridTest extends PHPUnit_Framework_TestCase {
         $res = $grid->placeShip($ship, $x, $y);
     }
 
+    /**
+     * Here we are testing when a ship overlaps the boundry (ie the 7,9 coord)
+     *
+     * @expectedException TomF\BattleShips\Exception\PlacementErrorException
+     * @expectedExceptionMessage 7, 9 is an invalid placement.
+     */
+    public function testShipOutofBoundsOverlapPlacement()
+    {
+        $grid = new Grid(8);
+        $ship = new Ship(3);
+
+        $x = 7;
+        $y = 7;
+
+        $res = $grid->placeShip($ship, $x, $y);
+    }
+
     public function testShipValidPlacement()
     {
         $grid = new Grid(10);
