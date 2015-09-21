@@ -20,6 +20,7 @@ class Grid
 
     /**
      * Convenience counters...
+     * @todo: refactor score trackers
      */
     private $shotsFired = 0;
     private $shotsHit = 0;
@@ -35,15 +36,12 @@ class Grid
         $this->size = $size;
     }
 
-    // public function addShip()
-
     /**
     * Placement assumes x,y represent stern (back of ship)
     * @todo: Convert to use strategy pattern, possibly placement from bow or other?
     */
     public function placeShip(Ship $ship, $x, $y)
     {
-        // check in bounds
         $this->fitShip($x, $y);
 
         $point = new Point($x, $y);
